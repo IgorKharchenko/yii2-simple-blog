@@ -1,25 +1,26 @@
 <?php
 
-use common\components\Migration;
+use common\components\migrations\Migration;
 
 class m130524_201442_init extends Migration
 {
     public function safeUp ()
     {
-        $tableOptions = null;
+        $this->createTableWithTimestamps('{{%author}}', [
+            'id' => $this->primaryKey(),
 
-        $this->createTable('{{%author}}', [
-            'id'                   => $this->primaryKey(),
-            'username'             => $this->string()->notNull()->unique(),
-            'password_hash'        => $this->string()->notNull(),
-            'password_reset_token' => $this->string()->unique(),
-            'email'                => $this->string()->notNull()->unique(),
-            'created_at'           => $this->integer()->notNull(),
-            'updated_at'           => $this->integer()->notNull(),
-        ], $tableOptions);
+            'full_name'            => $this->string(64)->notNull(),
+            'username'             => $this->string(24)->notNull()->unique(),
+            'password_hash'        => $this->string(64)->notNull(),
+            'password_reset_token' => $this->string(64)->unique(),
+            'email'                => $this->string(128)->notNull()->unique(),
+
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime(),
+        ]);
     }
 
-    public function down ()
+    public function safeDown ()
     {
         $this->dropTable('{{%author}}');
     }
