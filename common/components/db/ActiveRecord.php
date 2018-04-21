@@ -24,10 +24,10 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         return ArrayHelper::merge(parent::behaviors(), [
             'timestamp' => [
-                'class'              => TimestampBehavior::class,
+                'class' => TimestampBehavior::class,
                 'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
-                'value'              => new Expression('NOW()'),
+                'value' => new Expression('NOW()'),
             ],
         ]);
     }
