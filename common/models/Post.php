@@ -89,6 +89,13 @@ class Post extends ActiveRecord
                     'created_at',
                     'updated_at',
                 ],
+                'integer',
+            ],
+            [
+                [
+                    'created_at',
+                    'updated_at',
+                ],
                 'safe',
             ],
         ]);
