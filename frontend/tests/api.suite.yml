@@ -3,5 +3,8 @@ actor: ApiTester
 modules:
     enabled:
         - Yii2:
-            part: [Yii2, REST, ApiHelper, fixtures]
+            part: [Yii2, ApiHelper, fixtures]
         - Asserts
+        - REST:
+            depends: PhpBrowser
+            url: http://localhost:25666/frontend/web/index-test.php
