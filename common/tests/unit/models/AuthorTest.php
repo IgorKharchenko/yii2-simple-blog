@@ -13,7 +13,7 @@ use common\tests\UnitTester;
  *
  * @package common\tests\unit\models
  */
-class AuthorValidationTest extends \Codeception\Test\Unit
+class AuthorTest extends \Codeception\Test\Unit
 {
     use UnitTestHelper;
 
