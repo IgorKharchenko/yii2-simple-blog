@@ -121,6 +121,13 @@ class Author extends ActiveRecord
                 ],
                 'integer',
             ],
+            [
+                [
+                    'created_at',
+                    'updated_at',
+                ],
+                'safe',
+            ],
         ];
     }
 
