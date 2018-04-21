@@ -17,4 +17,12 @@ return [
         'password_reset_token' => '124',
         'email'                => 'denchik.1038@rambler.ru',
     ],
+    'user2' => [
+        'full_name'            => 'Крюкова Раиса Леонидовна',
+        'username'             => 'angelocheK220',
+        // password_0
+        'password_hash'        => '$2y$13$gWYtx8QkG4ayvkf0/uniUenGmKpDJ1pXr1VbCzvLwkTZ4Esxn41ZC',
+        'password_reset_token' => '125',
+        'email'                => 'angelocheK220@yandex.ru',
+    ],
 ];
