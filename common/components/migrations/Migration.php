@@ -7,6 +7,8 @@ use yii\helpers\ArrayHelper;
 
 class Migration extends BaseClassMigration
 {
+    use TextTypesTrait;
+
     /**
      * Создаёт таблицу с названием и временными отпечатками created_at и updated_at
      * а также если движок - MySQL, то устанавливает нужную кодировку для таблицы:
