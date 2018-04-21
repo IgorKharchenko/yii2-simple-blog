@@ -1,0 +1,7 @@
+suite_namespace: frontend\tests\api
+actor: ApiTester
+modules:
+    enabled:
+        - Yii2:
+            part: [Yii2, REST, ApiHelper, fixtures]
+        - Asserts
