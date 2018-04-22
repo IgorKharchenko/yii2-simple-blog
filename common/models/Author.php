@@ -3,6 +3,8 @@
 namespace common\models;
 
 use common\components\db\ActiveRecord;
+use yii\base\InvalidArgumentException;
+use yii\web\IdentityInterface;
 
 /**
  * Class Author
@@ -17,7 +19,7 @@ use common\components\db\ActiveRecord;
  * @property integer $created_at
  * @property integer $updated_at
  */
-class Author extends ActiveRecord
+class Author extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -188,5 +190,48 @@ class Author extends ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * Возвращает id пользователя.
+     *
+     * @return int|null
+     */
+    public function getId() : ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Возвращает пользователя по id.
+     *
+     * @param int $id id пользователя.
+     *
+     * @return null|static
+     *
+     * @throws InvalidArgumentException в случае, если id невалидный.
+     */
+    public static function findIdentity($id)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            throw new InvalidArgumentException('id должен быть числом больше 0.');
+        }
+
+        return self::findOne(['id' => $id]);
+    }
+
+    public function validateAuthKey ($authKey)
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
+    }
+
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
+    }
+
+    public function getAuthKey()
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
     }
 }

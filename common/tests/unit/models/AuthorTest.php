@@ -6,6 +6,7 @@ use common\components\test\UnitTestHelper;
 use common\fixtures\AuthorFixture;
 use common\models\Author;
 use common\tests\UnitTester;
+use yii\base\InvalidArgumentException;
 
 /**
  * Class AuthorValidationTest
@@ -194,6 +195,44 @@ class AuthorTest extends \Codeception\Test\Unit
 
         $actual = $model->setPassword('%$^#&E%^Y$%Yw45ts');
         $this->assertFalse($actual);
+    }
+
+    public function testFindIdentityStringId()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('id должен быть числом больше 0.');
+
+        Author::findIdentity('bla bla bla');
+    }
+
+    public function testFindIdentityNegativeId()
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('id должен быть числом больше 0.');
+
+        Author::findIdentity(-1);
+    }
+
+    public function testFindIdentity()
+    {
+        $model = Author::findIdentity(1);
+        $this->assertInstanceOf(Author::class, $model);
+    }
+
+    public function testGetIdBadId()
+    {
+        $model = new Author();
+        $model->id = null;
+
+        $this->assertNull($model->getId());
+    }
+
+    public function testGetId()
+    {
+        $fixture = $this->tester->grabFixture('authors', 'admin');
+        $model = new Author($fixture);
+
+        $this->assertEquals($model->getId(), $model->id);
     }
 
     private function unicalizeAuthor (Author $model)
