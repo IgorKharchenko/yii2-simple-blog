@@ -65,7 +65,7 @@ class PostCest
             'description'       => $post->description,
             'content'           => $post->content,
             'author_id'         => $post->author_id,
-            'created_at'        => $post->created_at,
+            'created_at'        => $post->getCreationDatetime(),
             'updated_at'        => $post->updated_at,
         ];
 
