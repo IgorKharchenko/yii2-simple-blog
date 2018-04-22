@@ -3,8 +3,12 @@ actor: AcceptanceTester
 modules:
     enabled:
         - WebDriver:
-            url: http://it-rocks.local/frontend/web/
-            browser: chrome
+            url: http://it-rocks.local/frontend/web/index-test.php
+            browser: firefox
         - Yii2:
             part: [init, orm, fixtures]
         - Asserts
+extensions:
+    enabed:
+        - Codeception\Extensions\RunProcess:
+            - chromedriver
