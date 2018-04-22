@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /** @var $this \yii\web\View */
 /** @var $post \common\models\Post */
@@ -10,6 +11,10 @@ use yii\helpers\Html;
 
 $this->title = $post->title;
 ?>
+
+<?= Html::a('Перейти к списку постов', Url::to(['/post/index'], true), [
+    'class' => 'btn btn-primary',
+]) ?>
 
 <div class="container">
     <h1><?= Html::encode($this->title) ?></h1>
