@@ -9,6 +9,9 @@ use yii\helpers\ArrayHelper;
 /**
  * Class ActiveRecord
  *
+ * @property int $created_at
+ * @property int $updated_at
+ *
  * @package common\components
  */
 class ActiveRecord extends \yii\db\ActiveRecord
@@ -30,5 +33,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 'value' => new Expression('NOW()'),
             ],
         ]);
+    }
+
+    /**
+     * Возвращает дату и время создания экземпляра модели ActiveRecord.
+     *
+     * @return null|string
+     */
+    public function getCreationDatetime() : ?string
+    {
+        $datetime = \DateTime::createFromFormat(self::DATETIME_FORMAT, $this->created_at);
+
+        if (false === $datetime) {
+            return null;
+        }
+
+        return $datetime->format(self::DATETIME_FORMAT);
     }
 }
