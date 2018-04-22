@@ -78,9 +78,7 @@ class PostController extends Controller
         $post = Post::findOne(['id' => $id]);
 
         if (null === $post) {
-            return $this->render('error', [
-                'message' => 'Пост не найден!',
-            ]);
+            return $this->redirect(Url::to(['/site/error'], true));
         }
 
         $comments = Comment::find()
