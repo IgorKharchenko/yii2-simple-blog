@@ -11,9 +11,10 @@ class PostCest
     public function getPostsBadAmount (ApiTester $I)
     {
         $I->sendGET(Url::toRoute(['/post/list']), [
-            'amount'     => -1,
-            'previousId' => 1,
+            'amount' => -1,
+            'lastId' => 1,
         ]);
+        $I->seeResponseCodeIs(400);
         $I->seeResponseContainsJson([
             'success'      => false,
             'data'         => null,
@@ -24,23 +25,24 @@ class PostCest
     public function getPostsBadPreviousId (ApiTester $I)
     {
         $I->sendGET(Url::toRoute(['/post/list']), [
-            'amount'     => 1,
-            'previousId' => -1,
+            'amount' => 1,
+            'lastId' => -1,
         ]);
+        $I->seeResponseCodeIs(400);
         $I->seeResponseContainsJson([
             'success'      => false,
             'data'         => null,
-            'errorMessage' => 'Previous ID must be greater than 0 or equal.',
+            'errorMessage' => 'Last ID must be greater than 0 or equal.',
         ]);
     }
 
     public function getEmptyPosts (ApiTester $I)
     {
         $I->sendGET(Url::toRoute(['/post/list']), [
-            'amount'     => 1,
-            'previousId' => 100500,
+            'amount' => 1,
+            'lastId' => 100500,
         ]);
-
+        $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson([
             'success'      => true,
             'data'         => [],
@@ -51,8 +53,8 @@ class PostCest
     public function getPosts (ApiTester $I)
     {
         $I->sendGET(Url::toRoute(['/post/list']), [
-            'amount'     => 1,
-            'previousId' => 1,
+            'amount' => 1,
+            'lastId' => 1,
         ]);
 
         $post = Post::findOne(['id' => 2]);
@@ -67,6 +69,7 @@ class PostCest
             'updated_at'        => $post->updated_at,
         ];
 
+        $I->seeResponseCodeIs(200);
         $I->seeResponseContainsJson([
             'success'      => true,
             'data'         => [
