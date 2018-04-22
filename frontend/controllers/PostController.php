@@ -146,8 +146,11 @@ class PostController extends Controller
                      ->all();
 
         $out = [];
+        /** @var Post $post */
         foreach ($posts as $post) {
-            $out[] = $post->getAttributes();
+            $postAttributes = $post->getAttributes();
+            $postAttributes['created_at'] = $post->getCreationDatetime();
+            $out[] = $postAttributes;
         }
 
         $response->setStatusCode(200);

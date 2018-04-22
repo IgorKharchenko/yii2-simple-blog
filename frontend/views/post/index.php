@@ -26,6 +26,8 @@ $this->title = 'Посты в блоге';
                 <br/>
                 <span><?= Html::encode($post->description) ?></span>
                 <br/>
+                <span>Создана в <i><?= Html::encode($post->getCreationDatetime()) ?></i></span>
+                <br/>
                 <br/>
 
                 <?= Html::a('Перейти к записи', Url::to([

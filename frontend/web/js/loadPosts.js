@@ -31,8 +31,9 @@ function loadPosts(parameters) {
             row.append(`<span>${post.short_description}</span>`);
             row.append('<br/>');
             row.append(`<span>${post.description}</span>`);
+            row.append('<br/>');
+            row.append(`<span>Создана в <i>${post.created_at}</i></span>`);
             row.append('<br/><br/>');
-
 
             let postViewUrl = parameters.postViewUrl.replace('postId', post.id);
 
