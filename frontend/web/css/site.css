@@ -118,3 +118,10 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.item {
+    border: 1px solid greenyellow;
+    border-radius: 5px;
+    margin: 10px 0;
+    padding: 10px 0 10px 15px;
+}
