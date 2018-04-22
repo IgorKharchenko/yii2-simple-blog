@@ -1,0 +1,10 @@
+suite_namespace: frontend\tests\acceptance
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://it-rocks.local/frontend/web/
+            browser: chrome
+        - Yii2:
+            part: [init, orm, fixtures]
+        - Asserts
