@@ -10,14 +10,15 @@ use yii\web\IdentityInterface;
  * Class Author
  * Автор поста.
  *
- * @property integer $id
- * @property string  $username
- * @property string  $password_hash
- * @property string  $password_reset_token
- * @property string  $email
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer  $id
+ * @property string   $username
+ * @property string   $password_hash
+ * @property string   $password_reset_token
+ * @property string   $email
+ * @property integer  $status
+ * @property integer  $created_at
+ * @property integer  $updated_at
+ * @property Comment[] $comments
  */
 class Author extends ActiveRecord implements IdentityInterface
 {
@@ -134,13 +135,23 @@ class Author extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return array|\yii\db\ActiveRecord[]
+     * @return \yii\db\ActiveQuery
      */
     public function getComments ()
     {
         return $this->hasMany(Comment::class, [
             'author_id' => 'id',
-        ])->all();
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts()
+    {
+        return $this->hasMany(Post::class, [
+            'author_id' => 'id',
+        ]);
     }
 
     /**

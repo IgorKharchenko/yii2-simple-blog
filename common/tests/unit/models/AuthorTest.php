@@ -239,7 +239,7 @@ class AuthorTest extends \Codeception\Test\Unit
     public function testGetCommentsOnNull()
     {
         $model = new Author();
-        $comments = $model->getComments();
+        $comments = $model->getComments()->all();
 
         $this->assertEmpty($comments);
     }
@@ -248,7 +248,7 @@ class AuthorTest extends \Codeception\Test\Unit
     {
         $fixture = $this->tester->grabFixture('authors', 'admin');
         $model = new Author($fixture);
-        $comments = $model->getComments();
+        $comments = $model->getComments()->all();
 
         foreach ($comments as $comment) {
             $this->assertInstanceOf(Comment::class, $comment);
