@@ -134,6 +134,16 @@ class Author extends ActiveRecord implements IdentityInterface
     }
 
     /**
+     * @return array|\yii\db\ActiveRecord[]
+     */
+    public function getComments ()
+    {
+        return $this->hasMany(Comment::class, [
+            'author_id' => 'id',
+        ])->all();
+    }
+
+    /**
      * Устанавливает пользователю пароль.
      *
      * @param string $password новый пароль.
@@ -197,7 +207,7 @@ class Author extends ActiveRecord implements IdentityInterface
      *
      * @return int|null
      */
-    public function getId() : ?int
+    public function getId (): ?int
     {
         return $this->id;
     }
@@ -211,7 +221,7 @@ class Author extends ActiveRecord implements IdentityInterface
      *
      * @throws InvalidArgumentException в случае, если id невалидный.
      */
-    public static function findIdentity($id)
+    public static function findIdentity ($id)
     {
         if (!is_numeric($id) || $id <= 0) {
             throw new InvalidArgumentException('id должен быть числом больше 0.');
@@ -225,12 +235,12 @@ class Author extends ActiveRecord implements IdentityInterface
         throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
     }
 
-    public static function findIdentityByAccessToken($token, $type = null)
+    public static function findIdentityByAccessToken ($token, $type = null)
     {
         throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
     }
 
-    public function getAuthKey()
+    public function getAuthKey ()
     {
         throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
     }
