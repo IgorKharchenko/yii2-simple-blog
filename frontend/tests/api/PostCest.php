@@ -154,8 +154,8 @@ class PostCest
         $responseData = $response->data;
 
         $I->assertEquals(3, $responseData[0]->author->id);
-        $I->assertEquals(1, $responseData[1]->author->id);
-        $I->assertEquals(2, $responseData[2]->author->id);
+        $I->assertEquals(2, $responseData[1]->author->id);
+        $I->assertEquals(1, $responseData[2]->author->id);
     }
 
     private function getExpectedAuthorComments (ApiTester $I): array
@@ -168,17 +168,19 @@ class PostCest
         $user1 = new Author($user1);
         $user2 = new Author($user2);
 
+        $attributes = ['id', 'full_name', 'username', 'email', 'created_at', 'updated_at'];
+
         return [
             [
-                'author'           => $user2->getAttributes(),
+                'author'           => $user2->getAttributes($attributes),
                 'amountOfComments' => 1,
             ],
             [
-                'author'           => $admin->getAttributes(),
+                'author'           => $admin->getAttributes($attributes),
                 'amountOfComments' => 2,
             ],
             [
-                'author'           => $user1->getAttributes(),
+                'author'           => $user1->getAttributes($attributes),
                 'amountOfComments' => 2,
             ],
         ];

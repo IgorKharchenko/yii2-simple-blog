@@ -207,8 +207,18 @@ class PostController extends Controller
         $authorTableName = Author::tableName();
         $commentTableName = Comment::tableName();
 
+        $whatToSelect = <<<SELECT
+a.`id`, 
+a.`full_name`, 
+a.`username`, 
+a.`email`, 
+a.`created_at`, 
+a.`updated_at`, 
+COUNT(c.`id`) AS `amountOfComments`
+SELECT;
+
         $authors = Author::find()
-                         ->select('a.*, COUNT(c.`id`) AS `amountOfComments`')
+                         ->select($whatToSelect)
                          ->from("$authorTableName AS a")
                          ->leftJoin("$commentTableName AS c", 'a.`id` = c.`author_id`')
                          ->where([
