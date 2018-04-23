@@ -5,7 +5,6 @@ namespace common\tests\unit\models;
 use common\components\test\UnitTestHelper;
 use common\fixtures\AuthorFixture;
 use common\models\Author;
-use common\models\Comment;
 use common\tests\UnitTester;
 use yii\base\InvalidArgumentException;
 
@@ -234,25 +233,6 @@ class AuthorTest extends \Codeception\Test\Unit
         $model = new Author($fixture);
 
         $this->assertEquals($model->getId(), $model->id);
-    }
-
-    public function testGetCommentsOnNull()
-    {
-        $model = new Author();
-        $comments = $model->getComments()->all();
-
-        $this->assertEmpty($comments);
-    }
-
-    public function testGetComments()
-    {
-        $fixture = $this->tester->grabFixture('authors', 'admin');
-        $model = new Author($fixture);
-        $comments = $model->getComments()->all();
-
-        foreach ($comments as $comment) {
-            $this->assertInstanceOf(Comment::class, $comment);
-        }
     }
 
     private function unicalizeAuthor (Author $model)

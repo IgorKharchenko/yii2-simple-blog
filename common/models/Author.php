@@ -135,26 +135,6 @@ class Author extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getComments ()
-    {
-        return $this->hasMany(Comment::class, [
-            'author_id' => 'id',
-        ]);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPosts()
-    {
-        return $this->hasMany(Post::class, [
-            'author_id' => 'id',
-        ]);
-    }
-
-    /**
      * Устанавливает пользователю пароль.
      *
      * @param string $password новый пароль.
