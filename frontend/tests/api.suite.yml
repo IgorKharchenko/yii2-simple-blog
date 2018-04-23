@@ -4,6 +4,7 @@ modules:
     enabled:
         - Yii2:
             part: [Yii2, ApiHelper, fixtures]
+            cleanup: false # do not cleanup the fixtures
         - Asserts
         - REST:
             depends: PhpBrowser

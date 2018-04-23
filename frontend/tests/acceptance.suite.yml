@@ -7,4 +7,5 @@ modules:
             browser: chrome
         - Yii2:
             part: [init, orm, fixtures]
+            cleanup: false # do not cleanup the fixtures
         - Asserts
