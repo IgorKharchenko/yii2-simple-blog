@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use common\models\Author;
 use common\models\Comment;
 use common\models\Post;
 use yii\base\InvalidArgumentException;
@@ -24,7 +25,8 @@ class PostController extends Controller
             'verbs' => [
                 'class'   => VerbFilter::class,
                 'actions' => [
-                    'list' => ['GET'],
+                    'list'            => ['GET'],
+                    'author-comments' => ['GET'],
                 ],
             ],
         ]);
@@ -156,5 +158,99 @@ class PostController extends Controller
         $responseData['data'] = $out;
 
         return $responseData;
+    }
+
+    /**
+     * REST-экшен.
+     * Возвращает список авторов, поставивших комментарий к зависи с указанным id.
+     *
+     * @param int $postId id поста.
+     *
+     * @return string
+     */
+    public function actionAuthorComments ($postId)
+    {
+        $response = \Yii::$app->response;
+        $response->format = Response::FORMAT_JSON;
+
+        $responseData = [
+            'success'      => false,
+            'data'         => null,
+            'errorMessage' => null,
+        ];
+
+        $postId = (int)$postId;
+
+        if ($postId <= 0) {
+            $response->setStatusCode(400);
+            $responseData['errorMessage'] = 'Post ID must be greater than 0.';
+            return $responseData;
+        }
+
+        $post = Post::findOne(['id' => $postId]);
+        if (null === $post) {
+            $response->setStatusCode(404);
+            $responseData['errorMessage'] = 'Post not found.';
+            return $responseData;
+        }
+
+        /*
+         * Сразу скажу, что у меня было два пути решения задачи:
+         * 1. Сделать один запрос на возвращение всех авторов,
+         *    но тогда все преимущества ActiveRecord потерялись бы в один миг.
+         * 2. Выбирать всех авторов, а позже для каждого автора делать доп. запросы.
+         *
+         * Т.к. нагрузка на сервак неизвестна, то делаем предположение,
+         * что нагрузка небольшая и тогда преждевременная оптимизация не нужна.
+         */
+
+        $authorTableName = Author::tableName();
+        $commentTableName = Comment::tableName();
+
+        $authors = Author::find()
+                         ->select('a.*, COUNT(c.`id`) AS `amountOfComments`')
+                         ->from("$authorTableName AS a")
+                         ->leftJoin("$commentTableName AS c", 'a.`id` = c.`author_id`')
+                         ->where([
+                             '=',
+                             'c.`post_id`',
+                             $postId,
+                         ])
+                         ->orderBy('`amountOfComments` ASC')
+                         ->groupBy('a.`id`')
+                         ->asArray()
+                         ->all();
+
+        $responseData['success'] = true;
+        $responseData['data'] = $this->prepareAuthors($authors);
+        $response->setStatusCode(200);
+        return $responseData;
+    }
+
+    /**
+     * Запихивает все атрибуты сущности Author, вернувшиеся в sql-запросе,
+     * в массив с ключом 'author'.
+     *
+     * @param array $authors массив авторов, вернувшийся из sql-запроса.
+     *
+     * @return array
+     */
+    private function prepareAuthors (array $authors): array
+    {
+        $out = [];
+
+        /** @var Author $author */
+        foreach ($authors as $author) {
+            $arr = [];
+            $arr['amountOfComments'] = $author['amountOfComments'];
+            unset($author['amountOfComments']);
+
+            $arr['author'] = $author;
+
+            $out[] = $arr;
+            unset($arr);
+        }
+
+        return $out;
     }
 }
