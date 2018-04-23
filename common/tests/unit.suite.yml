@@ -4,5 +4,7 @@ bootstrap: false
 modules:
     enabled:
         - Yii2:
-            part: fixtures
+            part: [orm, fixtures]
+            transaction: false
             cleanup: false # do not cleanup the fixtures
+        - Asserts
