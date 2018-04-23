@@ -1,0 +1,14 @@
+suite_namespace: frontend\tests\acceptance
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WebDriver:
+            url: http://it-rocks.local/frontend/web/index-test.php
+            browser: firefox
+        - Yii2:
+            part: [init, orm, fixtures]
+        - Asserts
+extensions:
+    enabed:
+        - Codeception\Extensions\RunProcess:
+            - chromedriver

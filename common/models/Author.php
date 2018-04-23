@@ -3,21 +3,24 @@
 namespace common\models;
 
 use common\components\db\ActiveRecord;
+use yii\base\InvalidArgumentException;
+use yii\web\IdentityInterface;
 
 /**
  * Class Author
  * Автор поста.
  *
- * @property integer $id
- * @property string  $username
- * @property string  $password_hash
- * @property string  $password_reset_token
- * @property string  $email
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer  $id
+ * @property string   $username
+ * @property string   $password_hash
+ * @property string   $password_reset_token
+ * @property string   $email
+ * @property integer  $status
+ * @property integer  $created_at
+ * @property integer  $updated_at
+ * @property Comment[] $comments
  */
-class Author extends ActiveRecord
+class Author extends ActiveRecord implements IdentityInterface
 {
     /**
      * {@inheritdoc}
@@ -132,6 +135,26 @@ class Author extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments ()
+    {
+        return $this->hasMany(Comment::class, [
+            'author_id' => 'id',
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPosts()
+    {
+        return $this->hasMany(Post::class, [
+            'author_id' => 'id',
+        ]);
+    }
+
+    /**
      * Устанавливает пользователю пароль.
      *
      * @param string $password новый пароль.
@@ -188,5 +211,48 @@ class Author extends ActiveRecord
         }
 
         return true;
+    }
+
+    /**
+     * Возвращает id пользователя.
+     *
+     * @return int|null
+     */
+    public function getId (): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * Возвращает пользователя по id.
+     *
+     * @param int $id id пользователя.
+     *
+     * @return null|static
+     *
+     * @throws InvalidArgumentException в случае, если id невалидный.
+     */
+    public static function findIdentity ($id)
+    {
+        if (!is_numeric($id) || $id <= 0) {
+            throw new InvalidArgumentException('id должен быть числом больше 0.');
+        }
+
+        return self::findOne(['id' => $id]);
+    }
+
+    public function validateAuthKey ($authKey)
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
+    }
+
+    public static function findIdentityByAccessToken ($token, $type = null)
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
+    }
+
+    public function getAuthKey ()
+    {
+        throw new InvalidArgumentException(__METHOD__ . ' is not implemented');
     }
 }

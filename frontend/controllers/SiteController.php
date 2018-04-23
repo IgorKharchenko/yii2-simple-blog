@@ -1,7 +1,10 @@
 <?php
+
 namespace frontend\controllers;
 
+use yii\helpers\Url;
 use yii\web\Controller;
+use yii\web\Response;
 
 /**
  * Site controller
@@ -11,15 +14,12 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
+    public function actions ()
     {
         return [
-            'error' => [
+            'error'   => [
                 'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+                'view'  => 'error',
             ],
         ];
     }
@@ -29,8 +29,37 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex ()
     {
-        return $this->render('index');
+        return $this->redirect(Url::toRoute(['post/index']));
+        // return $this->render('index');
+    }
+
+    /**
+     * Хэндлер ошибки на сайте.
+     *
+     * @return mixed
+     */
+    public function actionError ($message = null)
+    {
+        if (\Yii::$app->request->isAjax) {
+            $response = \Yii::$app->response;
+            $response->format = Response::FORMAT_JSON;
+            $response->setStatusCode(400);
+
+            return [
+                'success'      => false,
+                'data'         => null,
+                'errorMessage' => 'ACHTUNG!',
+            ];
+        }
+
+        if (null === $message) {
+            $message = 'Неизвестная ошибка.';
+        }
+
+        return $this->render('error', [
+            'message' => $message,
+        ]);
     }
 }
