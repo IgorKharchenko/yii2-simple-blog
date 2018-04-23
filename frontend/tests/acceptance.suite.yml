@@ -4,11 +4,7 @@ modules:
     enabled:
         - WebDriver:
             url: http://it-rocks.local/frontend/web/index-test.php
-            browser: firefox
+            browser: chrome
         - Yii2:
             part: [init, orm, fixtures]
         - Asserts
-extensions:
-    enabed:
-        - Codeception\Extensions\RunProcess:
-            - chromedriver
